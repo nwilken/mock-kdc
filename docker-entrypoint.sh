@@ -34,11 +34,9 @@ default_realm = ${KRB5_REALM}
     ${KRB5_REALM} = {
         master_key_type = aes256-cts
         acl_file = /var/kerberos/krb5kdc/kadm5.acl
-        dict_file = /usr/share/dict/words
         admin_keytab = /var/kerberos/krb5kdc/kadm5.keytab
         key_stash_file = /var/kerberos/krb5kdc/stash
-        supported_enctypes = aes256-cts:normal aes128-cts:normal
-        default_principal_flags = +preauth
+        supported_enctypes = aes256-cts:normal
     }
 EOF
 
@@ -75,7 +73,7 @@ ls /docker-entrypoint-init.d/ > /dev/null
 
 process_init_files /docker-entrypoint-init.d/*
 
-# if command starts with an option, prepend mysqld
+# if command starts with an option, prepend krb5kdc
 if [ "${1:0:1}" = '-' ]; then
     set -- krb5kdc "$@"
 fi
